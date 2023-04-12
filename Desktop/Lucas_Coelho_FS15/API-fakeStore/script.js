@@ -1,32 +1,32 @@
-
 let listaDeProdutos = [];
 
 
 
-function buscarCategorias(){
+function buscarCategorias() {
     fetch("https://fakestoreapi.com/products/categories")
-    .then(res => res.json())
-    .then(dados => {
-        lista = listaDeProdutos;
-        dados.forEach(cada => {
-            categorias.innerHTML += `   
+        .then(res => res.json())
+        .then(dados => {
+            lista = listaDeProdutos;
+            dados.forEach(cada => {
+                categorias.innerHTML += `   
                 <li class="list-group-item">
                     <h6>
                         <input name="${cada.replace(" ", "-")}" type="checkbox" onClick="filtro()">
                         <span>${cada}</span>
                     </h6>
                 </li>`
+            })
         })
-    })
-}buscarCategorias();
+}
+buscarCategorias();
 
 
-function buscarProdutos(){
+function buscarProdutos() {
     fetch("https://fakestoreapi.com/products?limit=15")
-    .then(res => res.json())
-    .then(dados => {
-        dados.forEach(cada => {
-            products.innerHTML += `
+        .then(res => res.json())
+        .then(dados => {
+            dados.forEach(cada => {
+                products.innerHTML += `
             <li class="${cada.category.replace(" ", "-")}">
                 <div class="card">
                     <picture>
@@ -41,35 +41,38 @@ function buscarProdutos(){
                     </div>
                 </div>
             </li>`
+            })
         })
-    })
-}buscarProdutos();
+}
+buscarProdutos();
 
-function filtro(){
+function filtro() {
     let inputs = document.querySelectorAll("input:checked")
     let inputs_nomes = [];
-    for(let i = 0; i < inputs.length; i++){
+    for (let i = 0; i < inputs.length; i++) {
         inputs_nomes.push(inputs[i].name);
     }
 
     console.log(inputs_nomes)
 
     let lis = document.querySelectorAll("#products li");
-    for(let i = 0; i < lis.length; i++){
-        if(!lis[i].classList.contains(inputs_nomes.toString())){
+    if (inputs_nomes.length > 0) {
+        for (let i = 0; i < lis.length; i++) {
             lis[i].style.display = 'none'
-        } else {
-            lis[i].style.display = 'block'
         }
-        
-        if(0 === inputs_nomes.length){
-            lis[i].style.display = 'block'
+    } else {
+        for (let i = 0; i < lis.length; i++) {
+            lis[i].style.display = 'initial'
         }
+    }
 
-        if( inputs_nomes.length >= 2){
-            if(!lis[i].classList.contains(inputs_nomes.toString())){
-                lis[i].style.display = 'block'
-            }
+    if (0 === inputs_nomes.length) {
+        lis[i].style.display = 'block'
+    }
+
+    if (inputs_nomes.length >= 2) {
+        if (!lis[i].classList.contains(inputs_nomes.toString())) {
+            lis[i].style.display = 'block'
         }
     }
 }
